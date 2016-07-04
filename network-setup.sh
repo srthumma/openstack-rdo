@@ -9,6 +9,13 @@ HOST_GW=${HOST_GW:-192.168.0.1}
 INT_NAME=${INT_NAME:-em1}
 
 
+systemctl disable firewalld
+systemctl stop firewalld
+systemctl disable NetworkManager
+systemctl stop NetworkManager
+systemctl enable network
+systemctl start network
+
 hostnamectl set-hostname "${HOSTNAME}"
 
 
@@ -31,13 +38,9 @@ PEERDNS="yes"
 PEERROUTES="yes"
 EOF
 
-systemctl disable firewalld
-systemctl stop firewalld
-systemctl disable NetworkManager
-systemctl stop NetworkManager
-systemctl enable network
-systemctl start network
 
-ping -t 2 google.com
+systemctl restart network
+
+ping  google.com
 
 
