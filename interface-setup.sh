@@ -1,9 +1,9 @@
 #!/bin/bash -x
 
+INT_NAME=${1:-em1}
+HOST_IP=${2:-172.16.1.60}
+HOST_GW=${3:-172.16.1.1}
 
-HOST_IP=172.16.1.60
-HOST_GW=172.16.1.1
-INT_NAME=em3
 
 
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-${INT_NAME}
