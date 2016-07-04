@@ -67,8 +67,10 @@ neutron net-list
 #echo -n "Enter ${DEF_TENANT}_private_network ID and press [ENTER]: "
 #read PRIV_NET_ID
 
-nova boot --flavor m1.tiny --image cirros image  net-name=${DEF_TENANT}_private_network \
+nova boot --flavor m1.tiny --image "cirros image"  --nic net-name=${DEF_TENANT}_private_network \
           --security-group default --key-name ${DEF_TENANT}-key ${DEF_TENANT}-demo-instance1
+
+
 
 neutron floatingip-list
 neutron port-list
