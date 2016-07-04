@@ -1,5 +1,7 @@
 #!/bin/bash -x
 
+source ./env.vars
+
 EXT_GW=${EXT_GW:-192.168.0.1}
 EXT_NET=${EXT_NET:-192.168.0.0}
 EXT_SUBNET_START=${EXT_SUBNET_START:-192.168.0.100}
