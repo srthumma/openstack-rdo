@@ -1,6 +1,6 @@
 #!/bin/bash -x
 
-HOSTNAME=${HOST_NAME:-rdo-control-n1}
+HOSTNAME=${HOSTNAME:-rdo-control-n1}
 
 HOST_IP=${HOST_IP:-192.168.0.60}
 HOST_GW=${HOST_GW:-192.168.0.1}
@@ -40,6 +40,7 @@ DEVICE=br-ex
 DEVICETYPE=ovs
 TYPE=OVSBridge
 BOOTPROTO=static
+DEFROUTE="yes"
 IPADDR=${HOST_IP}
 NETMASK=255.255.255.0  
 GATEWAY=${HOST_GW} 
