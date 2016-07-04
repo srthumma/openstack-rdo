@@ -41,5 +41,5 @@ ONBOOT=yes
 EOF
 
 
-service network restart
+systemctl restart network
 

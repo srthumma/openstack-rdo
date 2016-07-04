@@ -11,12 +11,6 @@ INT_NAME=${INT_NAME:-em1}
 
 hostnamectl set-hostname "${HOSTNAME}"
 
-systemctl disable firewalld
-systemctl stop firewalld
-systemctl disable NetworkManager
-systemctl stop NetworkManager
-systemctl enable network
-systemctl start network
 
 mkdir /root/backup
 cp /etc/sysconfig/network-scripts/ifcfg-* /root/backup # backup
@@ -37,8 +31,12 @@ PEERDNS="yes"
 PEERROUTES="yes"
 EOF
 
-
-service network restart
+systemctl disable firewalld
+systemctl stop firewalld
+systemctl disable NetworkManager
+systemctl stop NetworkManager
+systemctl enable network
+systemctl start network
 
 ping -t 2 google.com
 
