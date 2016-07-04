@@ -10,7 +10,7 @@ cat << EOF > /etc/sysconfig/network-scripts/ifcfg-${INT_NAME}
 DEVICE=${INT_NAME}
 TYPE="Ethernet"
 BOOTPROTO=static
-DEFROUTE="yes"
+DEFROUTE=no
 IPADDR=${HOST_IP}
 NETMASK=255.255.255.0  
 GATEWAY=${HOST_GW} 
