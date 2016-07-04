@@ -41,6 +41,6 @@ EOF
 
 systemctl restart network
 
-ping  google.com
+ping  -c 2 google.com
 
 

@@ -2,18 +2,8 @@
 
 source ./env.vars
 
-EXT_GW=${EXT_GW:-192.168.0.1}
-EXT_NET=${EXT_NET:-192.168.0.0}
-EXT_SUBNET_START=${EXT_SUBNET_START:-192.168.0.100}
-EXT_SUBNET_END=${EXT_SUBNET_END:-192.168.0.150}
 
-DEF_TENANT=${DEF_TENANT:-rdo-starter}
-DEF_TENANT_USER=${DEF_TENANT_USER:-rdo-starter}
-DEF_TENANT_PWD=${DEF_TENANT_PWD:-rdo-starter-123}
 
-DEF_TENANT_EMAIL=${DEF_TENANT_EMAIL:-rdo@openstack.org}
-
-#cd /root
 . /root/keystonerc_admin
 
 neutron net-create external_network --provider:network_type flat --provider:physical_network extnet  --router:external
@@ -24,6 +14,13 @@ neutron subnet-create --name public_subnet --enable_dhcp=False --allocation-pool
 curl http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img | glance \
          image-create --name='cirros image' --visibility=public --container-format=bare --disk-format=qcow2  
          
+
+curl ${CIRROS_IMAGE_URL} | \
+    glance image-create --name="${CIRROS_IMAGE_NAME}" \
+                        --visibility=public \
+                        --container-format=bare \
+                        --disk-format=qcow2
+glance image-list
 
 
 nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
@@ -52,6 +49,10 @@ neutron subnet-create --name ${DEF_TENANT}_private_subnet ${DEF_TENANT}_private_
 
 neutron router-interface-add ${DEF_TENANT}_router ${DEF_TENANT}_private_subnet
 
+
+nova secgroup-add-rule default tcp 22 22 0.0.0.0/0
+nova secgroup-add-rule default icmp -1 -1 0.0.0.0/0
+
 neutron floatingip-create external_network
 
 ssh-keygen -b 2048 -t rsa -f ./${DEF_TENANT}_key -q -N ""
@@ -69,11 +70,19 @@ neutron net-list
 #echo -n "Enter ${DEF_TENANT}_private_network ID and press [ENTER]: "
 #read PRIV_NET_ID
 
-nova boot --flavor m1.tiny --image "cirros image"  --nic net-name=${DEF_TENANT}_private_network \
-          --security-group default --key-name ${DEF_TENANT}-key ${DEF_TENANT}-demo-instance1
+nova boot --flavor m1.tiny --image "${CIRROS_IMAGE_NAME}" \
+		  --nic net-name=${DEF_TENANT}_private_network \
+          --security-group default \
+          --key-name ${DEF_TENANT}-key \
+           ${DEF_TENANT}-demo-instance1
 
 
 
 neutron floatingip-list
 neutron port-list
+
 #neutron floatingip-associate de3b2be2-29d3-4ff1-83f7-2c79fedf156e  89146ad8-4e25-4878-8ac1-bb2d2f7c8907
+
+
+
+
