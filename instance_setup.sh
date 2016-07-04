@@ -11,9 +11,6 @@ neutron net-create external_network --provider:network_type flat --provider:phys
 neutron subnet-create --name public_subnet --enable_dhcp=False --allocation-pool=start=${EXT_SUBNET_START},end=${EXT_SUBNET_END} \
                         --gateway=${EXT_GW} external_network ${EXT_NET}/24
 
-curl http://download.cirros-cloud.net/0.3.4/cirros-0.3.4-x86_64-disk.img | glance \
-         image-create --name='cirros image' --visibility=public --container-format=bare --disk-format=qcow2  
-         
 
 curl ${CIRROS_IMAGE_URL} | \
     glance image-create --name="${CIRROS_IMAGE_NAME}" \
