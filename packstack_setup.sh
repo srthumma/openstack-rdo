@@ -10,7 +10,7 @@ INT_NAME=${INT_NAME:-em1}
 
 
 
-yum install -y centos-release-openstack-mitaka && yum update -y
+yum install -y centos-release-openstack-ocata && yum update -y
 yum install -y openstack-packstack
 
 
@@ -23,7 +23,9 @@ TYPE=OVSPort
 DEVICETYPE=ovs
 OVS_BRIDGE=br-ex
 ONBOOT=yes
+NM_CONTROLLED=no
 EOF
+
 
 
 cat << EOF > /etc/sysconfig/network-scripts/ifcfg-br-ex 
@@ -38,8 +40,12 @@ GATEWAY=${HOST_GW}
 DNS1=${HOST_GW}
 DNS2=8.8.8.8
 ONBOOT=yes
+NM_CONTROLLED=no
 EOF
 
+rmmod kvm_intel
+rmmod kvm
+modprobe kvm
+modprobe kvm_intel
 
 systemctl restart network
-
